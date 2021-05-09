@@ -31,14 +31,14 @@ public class GameApiController {
 
     @GetMapping("/{gameId}")
     public ResponseEntity<GameResponseDto> bringGameData(@PathVariable long gameId) {
-        return ResponseEntity.ok().body(gameService.retrieveGameData(gameId));
+        return ResponseEntity.ok(gameService.retrieveGameData(gameId));
     }
 
     @GetMapping("/{gameId}/move/check")
     public ResponseEntity<MoveCheckResponseDto> checkMovement(@PathVariable long gameId,
         @ModelAttribute MoveRequestDto moveRequestDto) {
 
-        return ResponseEntity.ok().body(gameService.checkMovement(gameId, moveRequestDto));
+        return ResponseEntity.ok(gameService.checkMovement(gameId, moveRequestDto));
     }
 
     @PutMapping("/{gameId}/move")
@@ -48,7 +48,7 @@ public class GameApiController {
         final MoveResponseDto moveResponseDto = gameService.move(gameId, moveRequestDto);
         final String subscriptionUrl = String.format("/topic/games/%s/move", gameId);
         simpMessagingTemplate.convertAndSend(subscriptionUrl, moveResponseDto);
-        return ResponseEntity.ok().body(moveResponseDto);
+        return ResponseEntity.ok(moveResponseDto);
     }
 
 }

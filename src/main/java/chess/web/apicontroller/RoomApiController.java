@@ -31,11 +31,11 @@ public class RoomApiController {
 
     @GetMapping
     public ResponseEntity<RoomsResponseDto> bringRoomData() {
-        return ResponseEntity.ok().body(gameService.retrieveRoomsData());
+        return ResponseEntity.ok(gameService.retrieveRoomsData());
     }
 
     @PutMapping("/{roomId}/join")
-    public ResponseEntity<Object> join(@PathVariable long roomId,
+    public ResponseEntity<Void> join(@PathVariable long roomId,
         @RequestBody JoinRequestDto joinRequestDto) {
 
         gameService.join(roomId, joinRequestDto);

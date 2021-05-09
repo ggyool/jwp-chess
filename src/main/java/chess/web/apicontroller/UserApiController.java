@@ -27,10 +27,7 @@ public class UserApiController {
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody UserRequestDto userRequestDto) {
         final long id = userService.add(userRequestDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .location(URI.create("/users/" + id))
-            .body("{}");
+        return ResponseEntity.created(URI.create("/users/" + id)).body("{}");
     }
 
     @PostMapping("/authentication")
@@ -39,8 +36,7 @@ public class UserApiController {
 
         final UserResponseDto userResponseDto = userService.authenticate(userRequestDto);
         session.setAttribute(SESSION_KEY, userRequestDto.getName());
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(userResponseDto);
+        return ResponseEntity.ok(userResponseDto);
     }
 
 }
