@@ -62,12 +62,8 @@ public class GameService {
     public void join(final long roomId, final JoinRequestDto joinRequestDto) {
         final long guestId = joinRequestDto.getGuestId();
         final Room room = gameRepository.findRoomById(roomId);
-        if (room.isFull()) {
-            throw new GameParticipationFailureException("이미 방이 가득 찼습니다.");
-        }
-        if (room.isAlreadyJoin(guestId)) {
-            throw new GameParticipationFailureException("이미 참여한 방입니다.");
-        }
+        room.validateFull();
+        room.validateAlreadyJoined(guestId);
         gameRepository.joinGuest(guestId, roomId);
     }
 

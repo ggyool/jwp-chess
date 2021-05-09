@@ -1,5 +1,6 @@
 package chess.domain.game.room;
 
+import chess.exception.GameParticipationFailureException;
 import java.util.Objects;
 
 public class Room {
@@ -17,12 +18,20 @@ public class Room {
         this.guestId = guestId;
     }
 
-    public boolean isFull() {
+    public void validateFull() {
+        if (isFull()) {
+            throw new GameParticipationFailureException("이미 방이 가득 찼습니다.");
+        }
+    }
+
+    private boolean isFull() {
         return Objects.nonNull(guestId);
     }
 
-    public boolean isAlreadyJoin(final long userId) {
-        return hostId == userId;
+    public void validateAlreadyJoined(final long userId) {
+        if (hostId == userId) {
+            throw new GameParticipationFailureException("이미 참여한 방입니다.");
+        }
     }
 
     public long getId() {
